@@ -3,11 +3,20 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-  <section class="md:max-w-7xl max-w-sm m-auto mt-30">
+  <section class="md:max-w-7xl m-auto mt-30 px-4">
     <div class="border-b p-5 border-gray-300">
       <h2 class="text-center font-bold text-pink-700 text-5xl">Catalogo</h2>
     </div>
 
-    <main></main>
+    <div class="mt-5 px-5">
+      <input 
+        type="text"
+        class="border px-3 py-2 rounded-xl md:w-200 border-pink-700 focus:border-pink-200"
+        placeholder="Buscar..."
+        >
+    </div>
+    <main>
+      
+    </main>
   </section>
 </Layout>

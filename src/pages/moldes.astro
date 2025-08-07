@@ -1,7 +1,44 @@
 ---
 import Layout from "../layouts/Layout.astro"
+
+import { parseSheetData } from "../utils/parseSheetData";
+import MoldeCard from "../components/Ui/moldes/MoldeCard.astro";
+
+const res = await fetch(import.meta.env.PUBLIC_MOLDES_API)
+const data = await res.json()
+const moldes = parseSheetData(data)
 ---
 
 <Layout>
-    
+    <div class="mt-30 max-w-7xl mx-auto">
+        <h2 class="text-3xl font-bold mb-6 text-center">Moldes</h2>
+        <div class="border border-gray-300"></div>
+        
+        <div class="mt-5 flex justify-between">
+            <input 
+                type="text"
+                class="border px-3 py-2 rounded-full"
+                placeholder="Buscar..."
+            />
+            <div class="border">
+
+            </div>
+        </div>
+
+        <main>
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 mt-8">
+                {
+                    moldes.map(molde => {
+                    console.log("Molde ID:", molde.Id)
+                    return (
+                        <a href={`/producto/${molde.Id}`}>
+                    <MoldeCard producto={molde}/>
+                </a>
+                )
+                })
+        }
+        </main>
+
+    </div>
+</div>
 </Layout>

@@ -1,0 +1,67 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/Layout.astro";
+
+import { parseSheetData } from "../../utils/parseSheetData";
+import MoldePreview from "../../components/Ui/moldes/MoldePreview";
+
+const { id } = Astro.params;
+
+const [resMoldes, resKits, resCat] = await Promise.all([
+  fetch(import.meta.env.PUBLIC_MOLDES_API),
+  fetch(import.meta.env.PUBLIC_KITS_API),
+  fetch(import.meta.env.PUBLIC_PRODUCTOS_API),
+]);
+
+const moldes = parseSheetData(await resMoldes.json());
+const kits = parseSheetData(await resKits.json());
+const catalogo = parseSheetData(await resCat.json());
+
+const producto =
+  moldes.find((p) => p.Id === id) ||
+  kits.find((p) => p.Id === id) ||
+  catalogo.find((p) => p.Id === id);
+
+const esMolde = moldes.some((p) => p.Id === id);
+
+if (!producto) throw new Error("Producto no encontrado");
+---
+
+<Layout>
+  <main class="mt-40 max-w-7xl mx-auto">
+      <div class="mt-8">
+        <a
+          href={`/${esMolde ? "moldes" : (producto.Categoria ?? "")}`}
+          class="text-pink-600 hover:underline"
+        >
+          ← Volver atras
+        </a>
+      </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div>
+            {
+          esMolde && producto?.PDF ? (
+            <MoldePreview
+              client:only="react"
+              pdfUrl={producto.PDF}
+            />
+          ) : (
+            <p class="text-gray-500 italic mb-8">
+              Este producto no tiene vista previa disponible
+            </p>
+          )
+        }
+      </div>
+      <div class="bg-white">
+        <div class="p-10">
+            <h2 class="text-4xl text-pink-500">{producto.Titulo}</h2>
+            <p class="mt-40">{producto.Descripcion}</p>
+            <p>{producto.Precio}</p>
+            <p>{producto.Categoria}</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</Layout>
