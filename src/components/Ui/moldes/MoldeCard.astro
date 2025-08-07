@@ -1,0 +1,25 @@
+---
+interface Props {
+  producto: {
+    Id: string;
+    Titulo: string;
+    Descripcion: string;
+    Precio: string;
+    PDF?: string;
+    Imagen: string;
+    Categoria: string;
+  };
+}
+
+const { producto } = Astro.props;
+---
+
+<div class="rounded-lg transition">
+  <div class="rounded-xl border-gray-400 shadow-md overflow-hidden">
+    <img src={producto.Imagen} alt={producto.Titulo} class=""/>
+    <div class="bg-white">
+        <h2 class="text-center text-2xl font-semibold mb-1">{producto.Titulo}</h2>
+        <p class="text-xl text-center mt-2 italic text-pink-500">{producto.Precio}</p>
+    </div>
+  </div>
+</div>
